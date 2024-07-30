@@ -12,19 +12,35 @@ function App() {
 			question: "What's your favorite color?",
 			options: ["Red 🔴", "Blue 🔵", "Green 🟢", "Yellow 🟡"],
 		},
+		{
+			question: "What's your favorite animal?",
+			options: ["Dog 🐶", "Cat 🐱", "Elephant 🐘", "Dolphin 🐬"],
+		},
+		{
+			question: "What's your favorite food?",
+			options: ["Pizza 🍕", "Sushi 🍣", "Burger 🍔", "Salad 🥗"],
+		},
 	];
-	const keywords = {
+	/*const keywords = {
 		Fire: "fire",
 		Water: "water",
 		Earth: "earth",
 		Air: "air",
-	};
+	};*/
 	const elements = {
 		"Red 🔴": "Fire",
 		"Blue 🔵": "Water",
 		"Green 🟢": "Earth",
 		"Yellow 🟡": "Air",
 		// Continue mapping all your possible options to a keyword
+		"Dog 🐶": "Earth",
+		"Cat 🐱": "Earth",
+		"Elephant 🐘": "Earth",
+		"Dolphin 🐬": "Water",
+		"Pizza 🍕": "Fire",
+		"Sushi 🍣": "Water",
+		"Burger 🍔": "Fire",
+		"Salad 🥗": "Earth",
 	};
 
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);

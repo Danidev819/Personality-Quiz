@@ -18,6 +18,7 @@ export default function UserForm() {
 			<label htmlFor="name">Name:</label>
 			<input
 				type="text"
+				id="name"
 				value={inputName}
 				onChange={(e) => setInputName(e.target.value)}
 			/>
