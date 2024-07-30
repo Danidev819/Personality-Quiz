@@ -7,7 +7,7 @@ export default function Results({ element, artwork }) {
 	return (
 		<div>
 			<p>
-				<strong>{name}</strong>, your element is: {element}
+				{(name && <strong>{name}</strong>) || ""} your element is: {element}
 			</p>
 			{artwork ? (
 				<div className="artwork">

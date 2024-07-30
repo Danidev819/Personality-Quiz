@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import { UserProvider } from "./components/UserContext";
@@ -31,7 +31,7 @@ function App() {
 	const [answers, setAnswers] = useState([]);
 	const [username, setUserName] = useState("");
 	const [element, setElement] = useState("");
-	const [artwork, setArtWork] = useState(null);
+	const [artwork, setArtwork] = useState(null);
 
 	const handleAnswer = (answer) => {
 		setAnswers([...answers, answer]);
@@ -53,28 +53,25 @@ function App() {
 		);
 	};
 
-	async function fetchImage() {
-		try {
-			const response = await fetch(
-				"https://collectionapi.metmuseum.org/public/collection/v1/search",
-			);
-			const data = await response.json();
-			setArtWork(data.message);
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
 	useEffect(() => {
 		if (currentQuestionIndex === questions.length) {
+			const objectId = Math.floor(Math.random() * 100) + 1;
 			const selectedElement = determineElement(answers);
 			setElement(selectedElement);
-			fetchImage(keywords[selectedElement]);
+			async function fetchImage() {
+				const response = await fetch(
+					`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectId}`,
+				);
+				const data = await response.json();
+				setArtwork(data);
+			}
+
+			fetchImage();
 		}
 	}, [currentQuestionIndex]);
 
 	return (
-		<UserProvider>
+		<UserProvider value={{ name: username, setName: setUserName }}>
 			<Header />
 			<Routes>
 				<Route
