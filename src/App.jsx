@@ -6,43 +6,54 @@ import UserForm from "./components/UserForm";
 import Question from "./components/Question";
 import Results from "./components/Results";
 
-function App() {
-	const questions = [
-		{
-			question: "What's your favorite color?",
-			options: ["Red 🔴", "Blue 🔵", "Green 🟢", "Yellow 🟡"],
-		},
-		{
-			question: "What's your favorite animal?",
-			options: ["Dog 🐶", "Cat 🐱", "Elephant 🐘", "Dolphin 🐬"],
-		},
-		{
-			question: "What's your favorite food?",
-			options: ["Pizza 🍕", "Sushi 🍣", "Burger 🍔", "Salad 🥗"],
-		},
-	];
-	/*const keywords = {
-		Fire: "fire",
-		Water: "water",
-		Earth: "earth",
-		Air: "air",
-	};*/
-	const elements = {
-		"Red 🔴": "Fire",
-		"Blue 🔵": "Water",
-		"Green 🟢": "Earth",
-		"Yellow 🟡": "Air",
-		// Continue mapping all your possible options to a keyword
-		"Dog 🐶": "Earth",
-		"Cat 🐱": "Earth",
-		"Elephant 🐘": "Earth",
-		"Dolphin 🐬": "Water",
-		"Pizza 🍕": "Fire",
-		"Sushi 🍣": "Water",
-		"Burger 🍔": "Fire",
-		"Salad 🥗": "Earth",
-	};
+const questions = [
+	{
+		question: "What's your favorite color?",
+		options: ["Red 🔴", "Blue 🔵", "Green 🟢", "Yellow 🟡"],
+	},
+	{
+		question: "What's your favorite animal?",
+		options: ["Dog 🐶", "Cat 🐱", "Elephant 🐘", "Dolphin 🐬"],
+	},
+	{
+		question: "What's your favorite food?",
+		options: ["Pizza 🍕", "Sushi 🍣", "Burger 🍔", "Salad 🥗"],
+	},
+];
 
+const keywords = {
+	Fire: "fire",
+	Water: "water",
+	Earth: "earth",
+	Air: "air",
+};
+
+const elements = {
+	"Red 🔴": "Fire",
+	"Blue 🔵": "Water",
+	"Green 🟢": "Earth",
+	"Yellow 🟡": "Air",
+	// Continue mapping all your possible options to a keyword
+	"Dog 🐶": "Earth",
+	"Cat 🐱": "Earth",
+	"Elephant 🐘": "Earth",
+	"Dolphin 🐬": "Water",
+	"Pizza 🍕": "Fire",
+	"Sushi 🍣": "Water",
+	"Burger 🍔": "Fire",
+	"Salad 🥗": "Earth",
+};
+
+async function fetchImage(selectedElement) {
+	const objectId = Math.floor(Math.random() * 100) + 1;
+	const response = await fetch(
+		`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectId}`,
+	);
+	const data = await response.json();
+	return data;
+}
+
+function App() {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [answers, setAnswers] = useState([]);
 	const [username, setUserName] = useState("");
@@ -70,19 +81,13 @@ function App() {
 	};
 
 	useEffect(() => {
+		document.title = "Personality Quiz";
 		if (currentQuestionIndex === questions.length) {
-			const objectId = Math.floor(Math.random() * 100) + 1;
 			const selectedElement = determineElement(answers);
 			setElement(selectedElement);
-			async function fetchImage() {
-				const response = await fetch(
-					`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectId}`,
-				);
-				const data = await response.json();
+			fetchImage(keywords[selectedElement]).then((data) => {
 				setArtwork(data);
-			}
-
-			fetchImage();
+			});
 		}
 	}, [currentQuestionIndex]);
 
